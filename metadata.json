@@ -1,0 +1,6 @@
+{
+  "name": "MyData API Serverless",
+  "description": "Upload images to preview them and generate instant serverless API endpoints and shareable links.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
