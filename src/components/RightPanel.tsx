@@ -186,13 +186,18 @@ export default function RightPanel({
           <div className="p-6 border-t border-slate-100 bg-slate-50/80 backdrop-blur-sm shrink-0">
             <label className="text-xs font-bold text-slate-700 tracking-wider mb-2 block">DIRECT ASSET URL</label>
             <div className="space-y-2">
-              <input 
-                type="text" 
-                readOnly 
-                value={shareUrlLocal}
-                className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-xs font-mono text-slate-600 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm transition-all"
-                onClick={(e) => (e.target as HTMLInputElement).select()}
-              />
+              <a 
+                href={shareUrlLocal}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-between px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-xs font-mono text-slate-600 hover:border-primary hover:text-primary transition-colors hover:shadow-sm"
+                title="Click to open direct link"
+              >
+                <span className="truncate flex-1" onClick={(e) => {
+                  navigator.clipboard.writeText(shareUrlLocal);
+                }}>{shareUrlLocal}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 ml-2 flex-shrink-0 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
               <button 
                 onClick={copyToClipboard}
                 className={`w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-bold shadow-sm transition-all duration-200 ${
