@@ -178,9 +178,13 @@ app.get('/api/gallery', async (req, res) => {
           fileType = 'image';
           try {
             if (ext !== '.svg') {
-              const metadata = await sharp(file).metadata();
-              width = metadata.width || 0;
-              height = metadata.height || 0;
+              let sharpImpl;
+              try { sharpImpl = (await import('sharp')).default; } catch (e) {}
+              if (sharpImpl) {
+                const metadata = await sharpImpl(file).metadata();
+                width = metadata.width || 0;
+                height = metadata.height || 0;
+              }
             }
           } catch (e) {
             console.error('Error getting image size for', file, e);
@@ -339,7 +343,13 @@ app.get('/media/*', async (req, res, next) => {
           return res.sendFile(physicalPath);
         } else {
           try {
-            let image = sharp(physicalPath);
+            let sharpImpl;
+            try { sharpImpl = (await import('sharp')).default; } catch (e) {}
+            if (!sharpImpl) {
+              res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+              return res.sendFile(physicalPath);
+            }
+            let image = sharpImpl(physicalPath);
             
             if (scale !== 100) {
               const metadata = await image.metadata();
